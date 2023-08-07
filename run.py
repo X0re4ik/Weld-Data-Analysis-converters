@@ -6,10 +6,27 @@ from notification_system.models import worker_sensor
 
 from datetime import datetime
 
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+body = "This is an email with attachment sent from Python"
+
+
+message = MIMEMultipart()
+message["From"] = "Xore4ik@yandex.ru"
+message["To"] = "Xore4ik@gmail.com"
+message["Subject"] = "Это я"
+
+# Add body to email
+message.attach(MIMEText(body, "plain"))
+
 if __name__ == '__main__':
-    session
-    table = worker_sensor.insert().values(sensor_id=2, worker_id=9, alert_time=datetime.now())
-    session.begin()
-    session.execute(table)
-    session.commit()
+
+
+    smtpObj = smtplib.SMTP_SSL('smtp.yandex.com')
+    smtpObj.login('Xore4ik@yandex.ru','...')
+    smtpObj.sendmail('Xore4ik@yandex.ru', 'Xoore4ik@gmail.com', message.as_string())
+
+    smtpObj.quit()
     

@@ -45,17 +45,8 @@ worker_sensor = Table('worker_sensor',
                     metadata,
                     Column('worker_id', Integer, ForeignKey('worker.id'), nullable=False),
                     Column('sensor_id', Integer, ForeignKey('sensor.id'), nullable=False),
-                    Column('alert_time', Time, nullable=False)
+                    Column('alert_time', Time, nullable=False),
+                    Column('day_of_week', Integer, nullable=False)
                     )
 
 metadata.create_all(_engine)
-"""
-
-class WorkerSensor(Base):
-__tablename__ = "worker_sensor"
-
-id = Column(Integer, primary_key=True)
-worker_id = Column(Integer, ForeignKey('worker.id'), nullable=False)
-sensor_id = Column(Integer, ForeignKey('sensor.id'), nullable=False)
-alert_time = Column(Time, nullable=False)
-"""
