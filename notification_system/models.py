@@ -1,52 +1,71 @@
-from sqlalchemy import *
-from sqlalchemy.orm import create_session
-from sqlalchemy.ext.declarative import declarative_base
+import sqlalchemy as db 
 
+from datetime import datetime
+from sqlalchemy.orm import create_session, relationship
+from sqlalchemy.ext.declarative import declarative_base
 
 from notification_system.configs import DB_URI
 
-_engine = create_engine(DB_URI)
-metadata = MetaData(bind=_engine)
+_engine = db.create_engine(DB_URI)
+_Base = declarative_base(bind=_engine)
+
 session = create_session(bind=_engine)
 
-Base = declarative_base()
 
-class Sensor(Base):
-    __table__ = Table('sensor', metadata, autoload=True)
+class Sensor(_Base):
+    __table__ = db.Table('sensor', _Base.metadata, autoload=True)
 
-class Worker(Base):
-    __table__ = Table('worker', metadata, autoload=True)
-
-class Master(Base):
-    __table__ = Table('master', metadata, autoload=True)
+class Worker(_Base):
+    __table__ = db.Table('worker', _Base.metadata, autoload=True)
     
-class Welder(Base):
-    __table__ = Table('welder', metadata, autoload=True)
-    
-class Admin(Base):
-    __table__ = Table('admin', metadata, autoload=True)
+    children = relationship("NotificationDate")
 
-class WeldingWireDiameter(Base):
-    __table__ = Table('welding_wire_diameter', metadata, autoload=True)
+class Master(_Base):
+    __table__ = db.Table('master', _Base.metadata, autoload=True)
+    
+class Welder(_Base):
+    __table__ = db.Table('welder', _Base.metadata, autoload=True)
+    
+class Admin(_Base):
+    __table__ = db.Table('admin', _Base.metadata, autoload=True)
+
+class WeldingWireDiameter(_Base):
+    __table__ = db.Table('welding_wire_diameter', _Base.metadata, autoload=True)
         
-class WeldMetal(Base):
-    __table__ = Table('weld_metal', metadata, autoload=True)
+class WeldMetal(_Base):
+    __table__ = db.Table('weld_metal', _Base.metadata, autoload=True)
         
-class Measurement(Base):
-    __table__ = Table('measurement', metadata, autoload=True)
+class Measurement(_Base):
+    __table__ = db.Table('measurement', _Base.metadata, autoload=True)
     
     
-class DailyReport(Base):
-    __table__ = Table('daily_report', metadata, autoload=True)
+class DailyReport(_Base):
+    __table__ = db.Table('daily_report', _Base.metadata, autoload=True)
     
 
+class NotificationDate(_Base):
+    __tablename__ = 'notification_date'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    
+    worker_id = db.Column(db.Integer, db.ForeignKey(Worker.id), nullable=False, unique=True)
+    alert_time = db.Column(db.Time, nullable=False)
+    day_of_week = db.Column(db.Integer, nullable=False)
+    
 
-worker_sensor = Table('worker_sensor',
-                    metadata,
-                    Column('worker_id', Integer, ForeignKey('worker.id'), nullable=False),
-                    Column('sensor_id', Integer, ForeignKey('sensor.id'), nullable=False),
-                    Column('alert_time', Time, nullable=False),
-                    Column('day_of_week', Integer, nullable=False)
-                    )
+class SensorFileReports(_Base):
+    __tablename__ = 'sensor_file_reports'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    
+    sensor_id = db.Column(db.Integer, db.ForeignKey(Sensor.id), nullable=False)
+    date = db.Column(db.Date, default=datetime.now(), nullable=False)
+    path_to_pdf_file = db.Column(db.Text, nullable=False)
 
-metadata.create_all(_engine)
+
+worker_sensor = db.Table('worker_sensor',
+                    _Base.metadata,
+                    db.Column('worker_id', db.Integer, db.ForeignKey('public.worker.id'), nullable=False),
+                    db.Column('sensor_id', db.Integer, db.ForeignKey('public.sensor.id'), nullable=False))
+
+_Base.metadata.create_all(bind=_engine)

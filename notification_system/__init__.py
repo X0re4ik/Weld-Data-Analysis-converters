@@ -1,5 +1,4 @@
 
 
-class NotificationSystem:
-    pass
 
+from notification_system.сonverters import *
