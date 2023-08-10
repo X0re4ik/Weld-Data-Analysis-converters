@@ -7,6 +7,7 @@ from openpyxl.chart import (
 from openpyxl import Workbook
 from datetime import datetime, date, timedelta
 from sqlalchemy import and_, func
+from pathlib import Path
 
 from notification_system.сonverters._converter import _Converter
 from notification_system.models import (
@@ -102,7 +103,7 @@ class MeasurementsToExcelConverter(_Converter):
 
         
     
-    def load_from_DB(self, session):
+    def load_from_DB(self, session) -> bool:
         
         sensor = session.query(Sensor).filter(
             Sensor.mac_address==self._mac_address
@@ -123,7 +124,7 @@ class MeasurementsToExcelConverter(_Converter):
         ).all()
         
         
-        self._did_data_load = measurements != []
+        self._did_data_load = bool(measurements != [])
         if self._did_data_load:
             self.__measurements = measurements
             self.__daily_report = daily_report
@@ -208,5 +209,7 @@ class MeasurementsToExcelConverter(_Converter):
             start_column -= len(self._option_for_daily_report[i].keys())
             start_row += 1
         
-    def save(self, path = None):
-        self._work_book.save(self._name_file)
+    def save(self, path: Path):
+        path_ = path.joinpath(self._name_file)
+        self._work_book.save(path_.absolute())
+        

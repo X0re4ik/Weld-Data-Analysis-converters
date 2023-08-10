@@ -48,9 +48,14 @@ from sqlalchemy import and_, func
 
 
 from notification_system.сonverters.to_excel import MeasurementsToExcelConverter
+from notification_system import o
+import pathlib
 
+o(pathlib.Path(r"C:\Users\Ferre\OneDrive\Документы\Xore4ik\ZIT-ReadWeld\db\sensors")).start(
+    date(2023, 7, 28)
+)
 
-m = MeasurementsToExcelConverter("RW-tnlvnegclxzc", date=date(2023, 7, 28))
-m.load_from_DB(session=session)
-m.write_measurements()
-m.save()
+# m = MeasurementsToExcelConverter("RW-tnlvnegclxzc", date=date(2023, 7, 28))
+# m.load_from_DB(session=session)
+# m.write_measurements()
+# m.save()
