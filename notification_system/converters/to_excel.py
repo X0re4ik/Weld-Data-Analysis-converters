@@ -9,7 +9,7 @@ from openpyxl.chart import (
 )
 from openpyxl import Workbook
 
-from notification_system.сonverters._converter import _Converter
+from notification_system.converters._converter import _Converter
 
 class MeasurementsToExcelConverter(_Converter):
     def __init__(self, mac_address: str, date: date) -> None:

@@ -1,7 +1,5 @@
 import sqlalchemy as db 
-
-from datetime import datetime
-from sqlalchemy.orm import create_session, relationship
+from sqlalchemy.orm import create_session
 from sqlalchemy.ext.declarative import declarative_base
 
 from notification_system.configs import DB_URI

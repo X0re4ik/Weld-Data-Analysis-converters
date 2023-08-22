@@ -9,7 +9,7 @@ from sqlalchemy import and_, func
 
 
 from typing import List
-from notification_system.сonverters.db_data_store import DataBaseDataStore
+from notification_system.converters.db_data_store import DataBaseDataStore
 
 class _Converter(ABC):
     def __init__(self, mac_address: str, date: date, extension: str, session_=session, lazy_loading=True) -> None:

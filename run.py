@@ -1,4 +1,4 @@
-from notification_system.сonverters.to_excel import MeasurementsToExcelConverter
+from notification_system.converters.to_excel import MeasurementsToExcelConverter
 from datetime import date
 from pathlib import Path
 

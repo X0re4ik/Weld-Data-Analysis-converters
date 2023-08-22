@@ -1,19 +1,22 @@
 from multiprocessing import Process
 from pathlib import Path
+from typing import Optional
 
 from datetime import datetime, time, date, timedelta
 from notification_system.models import session
-from notification_system.сonverters.FilesCreator import FilesCreator
-
+from notification_system.converters.files_creator import FilesCreator
 
 class FilesCreatorController(Process):
     
     REPORTING_TIME = time(hour=9, minute=28, second=0)
     
-    PATH_TO_FILE_DB = Path(r"C:\Users\Ferre\OneDrive\Документы\Xore4ik\ZIT-ReadWeld\db\sensors")
+    PATH_TO_FILE_DB: Optional[Path] = None
     
     def __init__(self) -> None:
         Process.__init__(self)
+        
+        if self.__class__.PATH_TO_FILE_DB is None or not self.__class__.PATH_TO_FILE_DB.exists():
+            raise FileNotFoundError("Путь до файла с файлами не определен или не существует")
         
         self._did_current_day_record = False
         self._has_new_day_come = False
@@ -26,7 +29,7 @@ class FilesCreatorController(Process):
             current_date = date.today()
             
             if (datetime.now().time() > self.__class__.REPORTING_TIME) and not self._did_current_day_record:
-                fc = FilesCreator(session, self.__class__.PATH_TO_FILE_DB)
+                fc = FilesCreator(self.__class__.PATH_TO_FILE_DB, session)
                 fc.creat_reports(current_date)
                 self._did_current_day_record = True
             
