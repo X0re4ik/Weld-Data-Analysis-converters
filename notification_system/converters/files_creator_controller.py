@@ -24,10 +24,9 @@ class FilesCreatorController(Process):
     def run(self):
         
         next_day = (datetime.now() + timedelta(days=1)).date()
-        
+        print("Создать файлов запущен")
         while True:
             current_date = date.today()
-            
             if (datetime.now().time() > self.__class__.REPORTING_TIME) and not self._did_current_day_record:
                 fc = FilesCreator(self.__class__.PATH_TO_FILE_DB, session)
                 fc.creat_reports(current_date)

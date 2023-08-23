@@ -137,5 +137,5 @@ class MeasurementsToExcelConverter(_Converter):
         
         
     def save(self, path: Path):
-        self._work_book.save(self.name_file)
+        self._work_book.save(path.joinpath(self.name_file))
         

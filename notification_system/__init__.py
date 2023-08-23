@@ -10,4 +10,4 @@ path_to_db_with_sensors_file.mkdir(exist_ok=True)
 
 from notification_system.converters.files_creator_controller import FilesCreatorController
 
-FilesCreatorController.PATH_TO_FILE_DB = path_to_db_with_files
+FilesCreatorController.PATH_TO_FILE_DB = path_to_db_with_sensors_file

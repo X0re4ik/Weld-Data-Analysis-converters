@@ -32,7 +32,7 @@ class FilesCreator:
             new_dir_with_mac_address.mkdir(exist_ok=True)
             
             to_converter = cls_convertor(mac_address, date)
-            if to_converter.load_from_DB(self._session):
+            if to_converter.load_from_DB():
                 to_converter.creat_file()
                 to_converter.save(path=new_dir_with_mac_address)
     
